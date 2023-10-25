@@ -28,17 +28,24 @@
         position: absolute;
         bottom: 0;
         display: flex;
-        justify-content: space-between;
         background-color: rgba(0, 0, 0, 0.5);
         padding: 10px;
         z-index: 1;
         width: 100%;
         height: 20px;
-        margin: 0 0 0 0;
+        justify-content: flex-start;
+      }
+
+      .video-controls img {
+        margin: 0 30px;
+      }
+
+      .video-controls img:last-child {
+        margin-right: 0;
       }
 
       .video-controls img:hover {
-        cursor: pointer; /* 커서 모양 변경 (손가락 모양) */
+        cursor: pointer;
       }
 
       .memo-box {
