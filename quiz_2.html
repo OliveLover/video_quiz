@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    
+    <title>인공지능</title>
+    <style>
+      * {
+        font-family: 'Noto Sans KR', sans-serif;
+      }
+
+      body {
+        background-image: url('./src/maxresdefault.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+
+      .title {
+        max-width: 800px;
+        margin: 20px auto 20px auto;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .quiz-cards {
+        max-width: 800px;
+        margin: 20px auto 20px auto;
+        background-color: white;
+        box-shadow: 0px 0px 3px 0px black;
+        padding: 20px;
+      }
+
+      .submit {
+        margin: 20px auto 20px auto;
+        max-width: 800px;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title">
+      <h2>중간 퀴즈</h2>
+      <p>1. 산업혁명의 역사</p>
+    </div>
+    <form id="quiz-form">
+    <div class="quiz-cards">
+        <p>1. 1차 산업혁명은 증기기관의 기반의 기계혁명이다.</p>
+        <input type="radio" name="question1" value="true" id="q1true" />
+        <label for="q1true">O</label><br>
+        <input type="radio" name="question1" value="false" id="q1false" />
+        <label for="q1false">X</label>
+    </div>
+    
+    <div class="quiz-cards">
+      <p>2. 3차 산업혁명은 전기 에너지 기반의 대량생산 혁명이다.</p>
+      <input type="radio" name="question2" value="true" id="q2true" />
+      <label for="q2true">O</label><br>
+      <input type="radio" name="question2" value="false" id="q2false" />
+      <label for="q2false">X</label>
+    </div>
+
+    <div class="quiz-cards">
+      <p>3. 4차 산업혁명은 사물인터넷(IoT)과 빅데이터, 인공지능(AI) 기반의 만물초지능 혁명이다.</p>
+      <input type="radio" name="question3" value="true" id="q3true" />
+      <label for "q3true">O</label><br>
+      <input type="radio" name="question3" value="false" id="q3false" />
+      <label for="q3false">X</label><br><br>
+    </div>
+
+    <div class="submit">
+      <input type="submit" value="답안 제출" />
+    </div>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+      const quizForm = document.getElementById("quiz-form");
+      const resultDiv = document.getElementById("result");
+
+      quizForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const checkedRadios = document.querySelectorAll(
+          'input[type="radio"]:checked'
+        );
+
+        if (checkedRadios.length < 3) {
+          alert("답안을 선택하지 않은 문항이 있습니다.");
+          return;
+        }
+
+        const userAnswers = {
+          question1: document.querySelector('input[name="question1"]:checked')
+            .value,
+          question2: document.querySelector('input[name="question2"]:checked')
+            .value,
+          question3: document.querySelector('input[name="question3"]:checked')
+            .value,
+        };
+
+        // 로컬 스토리지에 사용자 답안 저장
+        localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+
+        window.location.href = "answer_2.html";
+      });
+    </script>
+  </body>
+</html>

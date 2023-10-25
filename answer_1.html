@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>결과 확인</title>
+    <style>
+      * {
+        font-family: "Noto Sans KR", sans-serif;
+      }
+
+      body {
+        background-image: url("./src/maxresdefault.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+
+      .title {
+        max-width: 800px;
+        margin: 20px auto 20px auto;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .result-cards {
+        max-width: 800px;
+        margin: 20px auto 20px auto;
+        background-color: white;
+        box-shadow: 0px 0px 3px 0px black;
+        padding: 20px;
+      }
+
+      .correct {
+        color: green;
+      }
+
+      .incorrect {
+        color: red;
+      }
+
+      .explanation {
+        color: blue; /* 파란 글자 색상 설정 */
+      }
+
+      .next-button {
+        margin: 20px auto 20px auto;
+        max-width: 800px;
+        text-align: right;
+      }
+
+      .total-result {
+        text-align: right;
+        color: black;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title">
+      <h2>결과 확인</h2>
+    </div>
+
+    <div class="result-cards" id="result"></div>
+    <div class="next-button">
+      <button id="next-button">다음 페이지로</button>
+    </div>
+
+    <script>
+      const userAnswers = JSON.parse(localStorage.getItem("userAnswers"));
+      const nextButton = document.getElementById("next-button");
+
+      nextButton.addEventListener("click", function () {
+        localStorage.removeItem("userAnswers");
+        window.location.href = "section2.html";
+      });
+
+      if (userAnswers) {
+        const correctAnswers = {
+          question1: "true",
+          question2: "false",
+          question3: "true",
+        };
+
+        const quiz = {
+          question1: "1. 인공지능은 현재 사용되고 있는 기술 중 하나입니다 ",
+          question2:
+            "2. 인공지능은 기계가 사람처럼 사고하는 능력을 가지고 있습니다 ",
+          question3: "3. 딥러닝은 인공지능의 한 형태입니다 ",
+        };
+
+        const explanations = {
+          question1:
+            "answer : O <br><br>풀이 : 인공지능은 현재 사용되고 있는 기술 중 하나입니다.",
+          question2:
+            "answer : X <br><br>풀이 : 인공지능은 기계가 사람처럼 사고하는 능력을 가지고 있지 않습니다.",
+          question3:
+            "answer : O <br><br>풀이 : 딥러닝은 인공지능의 한 형태입니다.",
+        };
+
+        let correctCount = 0;
+
+        const resultDiv = document.getElementById("result");
+
+        for (const question in userAnswers) {
+          const isCorrect = userAnswers[question] === correctAnswers[question];
+          const questionResult = document.createElement("div");
+          questionResult.classList.add("question");
+
+          if (isCorrect) {
+            questionResult.innerHTML = `<strong>${quiz[question]} :</strong> <span class="correct">&nbsp;정답</span>`;
+            correctCount++;
+          } else {
+            questionResult.innerHTML = `<strong>${quiz[question]} :</strong> <span class="incorrect">&nbsp;오답</span>`;
+            const explanation = document.createElement("p");
+            explanation.innerHTML = `<span class="explanation">${explanations[question]}</span>`;
+            questionResult.appendChild(explanation);
+          }
+
+          resultDiv.appendChild(questionResult);
+        }
+
+        const totalResult = document.createElement("div");
+        totalResult.classList.add("total-result");
+        totalResult.innerHTML = `정답 수: ${correctCount} / 3`;
+        resultDiv.appendChild(totalResult);
+      } else {
+        const resultDiv = document.getElementById("result");
+        resultDiv.textContent = "사용자 답안이 없습니다.";
+      }
+    </script>
+  </body>
+</html>

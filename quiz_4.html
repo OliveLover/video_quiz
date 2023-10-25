@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>인공지능</title>
+    <style>
+      * {
+        font-family: "Noto Sans KR", sans-serif;
+      }
+
+      body {
+        background-image: url("./src/maxresdefault.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+
+      .title {
+        max-width: 800px;
+        margin: 20px auto 20px auto;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .quiz-cards {
+        max-width: 800px;
+        margin: 20px auto 20px auto;
+        background-color: white;
+        box-shadow: 0px 0px 3px 0px black;
+        padding: 20px;
+      }
+
+      .submit {
+        margin: 20px auto 20px auto;
+        max-width: 800px;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title">
+      <h3>중간 퀴즈</h3>
+      <p>3. 4차 산업혁명 시대와 인공지능</p>
+    </div>
+
+    <form id="quiz-form">
+      <div class="quiz-cards">
+        <p>1. 무엇이 인공지능(AI)의 핵심 능력 중 하나인가요?</p>
+        <input type="radio" name="question1" value="1" id="q1_1" />
+        <label for="q1_1">1. 외부를 인식하고 추론하는 능력</label><br />
+        <input type="radio" name="question1" value="2" id="q1_2" />
+        <label for="q1_2">2. 금융 시장에서 투자 결정 내리기</label><br />
+        <input type="radio" name="question1" value="3" id="q1_3" />
+        <label for="q1_3">3. 사물인터넷의 데이터 관리</label><br />
+        <input type="radio" name="question1" value="4" id="q1_4" />
+        <label for="q1_4">4. 동화책 읽고 내용 이해하기</label><br />
+        <input type="radio" name="question1" value="5" id="q1_5" />
+        <label for="q1_5">5. 바둑에서 승리하기</label>
+      </div>
+
+      <div class="quiz-cards">
+        <p>
+          2. 인공지능과 인간이 다른 점 중 어떤 것에 대해 설명이 옳지 않나요?
+        </p>
+        <input type="radio" name="question2" value="1" id="q2_1" />
+        <label for="q2_1"
+          >1. 인공지능은 수학 계산과 체스에서 뛰어난 성과를 내지만 인간보다 사물
+          인식 능력이 낮다.</label
+        ><br />
+        <input type="radio" name="question2" value="2" id="q2_2" />
+        <label for="q2_2"
+          >2. 인간은 금융 시장에서 투자 결정을 내리기 어렵지만, AI는 이를 쉽게
+          수행할 수 있다.</label
+        ><br />
+        <input type="radio" name="question2" value="3" id="q2_3" />
+        <label for="q2_3"
+          >3. 인간은 일상적인 작업에 적응하는 것이 쉽지만, AI는 이러한 작업을
+          어려워한다.</label
+        ><br />
+        <input type="radio" name="question2" value="4" id="q2_4" />
+        <label for="q2_4"
+          >4. 인공지능을 활용할 때, 문제의 특성을 분석하고 적합한 기술을
+          복합적으로 활용해야 한다.</label
+        ><br />
+        <input type="radio" name="question2" value="5" id="q2_5" />
+        <label for="q2_5"
+          >5. 인공지능 시대에서 생산성이 높아지면서 더 많은 일자리가
+          생겨난다.</label
+        ><br />
+      </div>
+
+      <div class="quiz-cards">
+        <p>3. 다음 중 AI에 대체될 확률이 높은 직업은 무엇인가요?</p>
+        <input type="radio" name="question3" value="1" id="q3_1" />
+        <label for="q3_1">1. 스포츠 지도자(감독, 코치)</label><br />
+        <input type="radio" name="question3" value="2" id="q3_2" />
+        <label for="q3_2">2. 원고 교정자</label><br />
+        <input type="radio" name="question3" value="3" id="q3_3" />
+        <label for="q3_3">3. 관광 가이드</label><br />
+        <input type="radio" name="question3" value="4" id="q3_4" />
+        <label for="q3_4">4. 바리스타</label><br />
+        <input type="radio" name="question3" value="5" id="q3_5" />
+        <label for="q3_5">5. 학교 관리자(교장, 교감 등)</label><br /><br />
+      </div>
+
+      <div class="submit">
+        <input type="submit" value="답안 제출" />
+      </div>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+      const quizForm = document.getElementById("quiz-form");
+      const resultDiv = document.getElementById("result");
+
+      quizForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const checkedRadios = document.querySelectorAll(
+          'input[type="radio"]:checked'
+        );
+
+        if (checkedRadios.length < 3) {
+          alert("답안을 선택하지 않은 문항이 있습니다.");
+          return;
+        }
+
+        const userAnswers = {
+          question1: document.querySelector('input[name="question1"]:checked')
+            .value,
+          question2: document.querySelector('input[name="question2"]:checked')
+            .value,
+          question3: document.querySelector('input[name="question3"]:checked')
+            .value,
+        };
+
+        // 로컬 스토리지에 사용자 답안 저장
+        localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+
+        window.location.href = "answer_4.html";
+      });
+    </script>
+  </body>
+</html>

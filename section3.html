@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>인공지능</title>
+    <style>
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        position: relative;
+      }
+
+      .video-container {
+        flex: 1;
+        position: relative;
+        background-color: brown;
+        margin: 0 0 100 0;
+        padding: 0;
+      }
+
+      video {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .video-controls {
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        justify-content: space-between;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        z-index: 1;
+        width: 100%;
+        height: 20px;
+        margin: 0 0 0 0;
+      }
+
+      .video-controls img:hover {
+        cursor: pointer; /* 커서 모양 변경 (손가락 모양) */
+      }
+
+      .memo-box {
+        flex: 0.3;
+        background-color: rgba(222, 245, 12, 0.623);
+        padding: 10px;
+        overflow: auto;
+        max-height: 70vh;
+        margin: 0;
+      }
+
+      #memo-text {
+        width: 100%;
+        height: 70%;
+        resize: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="video-container">
+        <video id="video">
+          <source
+            src="https://eniassignment.s3.ap-northeast-2.amazonaws.com/section3.mp4"
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="video-controls">
+        <img src="./src/play-button.png" id="play-button" />
+        <img src="./src/back.png" id="previous-button" />
+        <img src="./src/next.png" id="next-button" />
+      </div>
+      <div class="memo-box">
+        <h2>NOTE</h2>
+        <textarea id="memo-text" placeholder="메모를 작성하세요..."></textarea>
+        <button class="custom-button" id="save-button">저장</button>
+        <button class="custom-button" id="delete-button">비우기</button>
+        <button class="custom-button" id="print-button">인쇄</button>
+      </div>
+    </div>
+
+    <script>
+      const memo = document.getElementById("memo-text");
+      const nextButton = document.getElementById("next-button");
+      const previousButton = document.getElementById("previous-button");
+      const video = document.getElementById("video");
+      const playButton = document.getElementById("play-button");
+
+      nextButton.addEventListener("click", function () {
+        window.location.href = "quiz_3.html";
+      });
+
+      previousButton.addEventListener("click", function () {
+        window.location.href = "section2.html";
+      });
+
+      document
+        .getElementById("save-button")
+        .addEventListener("click", function () {
+          const memoText = memo.value;
+
+          const blob = new Blob([memoText], { type: "text/plain" });
+
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = "Note.txt";
+          a.style.display = "none";
+
+          document.body.appendChild(a);
+          a.click();
+
+          document.body.removeChild(a);
+          alert("텍스트 파일로 저장되었습니다.");
+        });
+
+      document
+        .getElementById("print-button")
+        .addEventListener("click", function () {
+          const memoContent = memo.value;
+
+          const printWindow = window.open("", "_blank");
+          printWindow.document.open();
+          printWindow.document.write(`<pre>${memoContent}</pre>`);
+          printWindow.document.close();
+          printWindow.print();
+          printWindow.close();
+        });
+
+      document
+        .getElementById("delete-button")
+        .addEventListener("click", function () {
+          memo.value = "";
+        });
+
+      playButton.addEventListener("click", function () {
+        if (video.paused) {
+          video.play();
+          playButton.src = "./src/pause-button.png";
+        } else {
+          video.pause();
+          playButton.src = "./src/play-button.png";
+        }
+      });
+
+      video.addEventListener("ended", function () {
+        playButton.textContent = "Play";
+      });
+    </script>
+  </body>
+</html>

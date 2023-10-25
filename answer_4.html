@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>결과 확인</title>
+    <style>
+      * {
+        font-family: "Noto Sans KR", sans-serif;
+      }
+
+      body {
+        background-image: url("./src/maxresdefault.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+
+      .title {
+        max-width: 800px;
+        margin: 20px auto 20px auto;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .result-cards {
+        max-width: 800px;
+        margin: 20px auto 20px auto;
+        background-color: white;
+        box-shadow: 0px 0px 3px 0px black;
+        padding: 20px;
+      }
+
+      .correct {
+        color: green;
+      }
+
+      .incorrect {
+        color: red;
+      }
+
+      .explanation {
+        color: blue; /* 파란 글자 색상 설정 */
+      }
+
+      .next-button {
+        margin: 20px auto 20px auto;
+        max-width: 800px;
+        text-align: right;
+      }
+
+      .total-result {
+        text-align: right;
+        color: black;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title">
+      <h2>결과 확인</h2>
+    </div>
+
+    <div class="result-cards">
+      <div id="result"></div>
+    </div>
+
+    <div class="next-button">
+      <button id="next-button">다음 페이지로</button>
+    </div>
+
+    <script>
+      // 로컬 스토리지에서 사용자 답안 불러오기
+      const userAnswers = JSON.parse(localStorage.getItem("userAnswers"));
+      const nextButton = document.getElementById("next-button");
+
+      nextButton.addEventListener("click", function () {
+        localStorage.removeItem("userAnswers");
+        window.location.href = "summary.html";
+      });
+
+      if (userAnswers) {
+        // 정답과 사용자 답안을 비교하여 결과를 계산
+        const correctAnswers = {
+          question1: "1",
+          question2: "5",
+          question3: "2",
+        };
+
+        const quiz = {
+          question1: "1. 무엇이 인공지능(AI)의 핵심 능력 중 하나인가요? ",
+          question2:
+            "2. 인공지능과 인간이 다른 점 중 어떤 것에 대해 설명이 옳지 않나요? ",
+          question3: "3. 다음 중 AI에 대체될 확률이 높은 직업은 무엇인가요? ",
+        };
+
+        const explanations = {
+          question1:
+            "정답: 1 <br><br>인공지능의 핵심 능력 중 하나는 외부를 인식하고 추론하는 능력입니다.",
+          question2:
+            "정답: 5 <br><br>인공지능과 인간의 차이 중 하나는 AI가 사물 인식 능력이 낮다는 것입니다.",
+          question3:
+            "정답: 2 <br><br>원고 교정자는 AI에 대체될 가능성이 높은 직업 중 하나입니다.",
+        };
+
+        let correctCount = 0;
+
+        const resultDiv = document.getElementById("result");
+
+        for (const question in userAnswers) {
+          const isCorrect = userAnswers[question] === correctAnswers[question];
+          const questionResult = document.createElement("div");
+          questionResult.classList.add("question");
+
+          if (isCorrect) {
+            questionResult.innerHTML = `<strong>${quiz[question]} :</strong> <span class="correct">&nbsp;정답</span>`;
+            correctCount++;
+          } else {
+            questionResult.innerHTML = `<strong>${quiz[question]} :</strong> <span class="incorrect">&nbsp;오답</span>`;
+            const explanation = document.createElement("p");
+            explanation.innerHTML = `<span class="explanation">${explanations[question]}</span>`;
+            questionResult.appendChild(explanation);
+          }
+
+          resultDiv.appendChild(questionResult);
+        }
+
+        const totalResult = document.createElement("div");
+        totalResult.classList.add("total-result");
+        totalResult.innerHTML = `정답 수: ${correctCount} / 3`;
+        resultDiv.appendChild(totalResult);
+      } else {
+        const resultDiv = document.getElementById("result");
+        resultDiv.textContent = "사용자 답안이 없습니다.";
+      }
+    </script>
+  </body>
+</html>
